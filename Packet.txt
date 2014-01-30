@@ -1,0 +1,38 @@
+Byte 1
+01 - Trigger
+02 - Fire A
+04 - Fire B
+08 - Launch
+10 - Fire D
+20 - Mouse Fire
+40 - Pinkie Switch
+80 - Fire C
+
+Byte 2
+01 - Mode 1
+02 - Mode 2
+04 - Mode 3
+08 - Aux 1
+10 - Aux 2
+20 - Aux 3
+40 - Stick Hat 2 Up
+80 - Stick Hat 2 Right
+
+Byte 3
+01 - Stick Hat 2 Down
+02 - Stick Hat 2 Left
+04 - Throttle Hat Up
+08 - Throttle Hat Right
+10 - Throttle Hat Down
+20 - Throttle Hat Left
+40 - Mouse Up
+80 - Mouse Right
+
+Byte 4
+01 - Mouse Down
+02 - Mouse Left
+04 - Reserved
+08 - Reserved
+10-80 -- Stick Hat 1
+
+

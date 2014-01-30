@@ -1,0 +1,27 @@
+
+
+#include <windows.h>
+
+#include <ntverp.h>
+
+#define VER_FILETYPE  VFT_DLL
+#define VER_FILESUBTYPE VFT2_UNKNOWN
+#define VER_FILEDESCRIPTION_STR     "X36/X45 USB Filter Driver"
+#define VER_INTERNALNAME_STR        "x36f.sys"
+#define VER_ORIGINALFILENAME_STR    "x36f.sys"
+
+#define VER_COMPANYNAME_STR "Dhauzimmer"
+#define VER_PRODUCTNAME_STR "Saitek X36/X45 USB Filter Driver for Win98/ME/2000/XP"
+
+#define VER_LEGALCOPYRIGHT_YEARS    "2001-2010"
+#define VER_LEGALCOPYRIGHT_STR "Copyright (C) Will Miles. " VER_LEGALCOPYRIGHT_YEARS
+
+#define VER_PRODUCTVERSION 2,01,06,000
+#define VER_FILEVERSION VER_PRODUCTVERSION
+#define VER_PRODUCTVERSION_STR "2.106"
+#define VER_FILEVERSION_STR VER_PRODUCTVERSION_STR
+
+
+#include "common.ver"
+
+

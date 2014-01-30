@@ -1,0 +1,22 @@
+TARGETNAME=x36f
+TARGETTYPE=DRIVER
+DRIVERTYPE=WDM
+TARGETPATH=obj
+
+MSC_WARNING_LEVEL=-W3 -WX
+
+SOURCES= filter.c \
+         pnp.c \
+         power.c \
+         util.c \
+         ioctl.c \
+         profile.c \
+         queue.c \
+         engine.c \
+         axis.c \
+         memory.c \
+         filter.rc
+
+
+        
+

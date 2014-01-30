@@ -1,0 +1,264 @@
+;========================================================================================
+; Setup for Saitek X36 replacement driver
+;
+; Dhauzimmer 02/04/2001
+;
+;========================================================================================
+; Added X45 entries 12-13-2001
+;========================================================================================
+; Added Delreg entries to clear up SGE 02-17-2002
+;========================================================================================
+; Added X45 version 2 entries 06-24-2004
+;========================================================================================
+
+
+[Version]
+Signature="$WINDOWS NT$"
+Class=HIDClass
+ClassGuid={745a17a0-74d3-11d0-b6fe-00a0c90f57da}
+Layoutfile=layout.inf,layout1.inf,layout2.inf
+Provider=%Dhauzimmer%
+DriverVer=16/02/2007
+
+;========================================================================================
+
+[ControlFlags]
+ExcludeFromSelect = *
+
+[DestinationDirs]
+DefaultDestDir=12
+;
+; For Windows NT, all drivers go into %windir%\system32\drivers.  Since
+; there isn't a DIRID (LDID) that represents this path on both NT and Win95,
+; we specify the relative path off of %windir%.
+;
+HID_Inst.CopyFilesDLL.NT = 11
+
+;========================================================================================
+
+[ClassInstall]
+AddReg=HIDClassReg
+
+[HIDClassReg]
+HKR,,,,%HID.ClassName%
+HKR,,Icon,,-24
+HKR,,NoInstallClass,,1
+
+[ClassInstall32]
+Addreg=HIDClassReg
+
+
+;========================================================================================
+
+
+[Manufacturer]
+%Saitek%=Saitek.Section,NTamd64
+
+
+;========================================================================================
+
+[Saitek.Section.NTamd64]
+%USB\VID_06A3&PID_053F.DeviceDesc%=X36_USB_5, USB\VID_06A3&PID_053F
+%USB\VID_06A3&PID_803F.DeviceDesc%=X36_USB_8, USB\VID_06A3&PID_803F
+%USB\VID_06A3&PID_053C.DeviceDesc%=X45_USB_5, USB\VID_06A3&PID_053C
+%USB\VID_06A3&PID_803C.DeviceDesc%=X45_USB_8, USB\VID_06A3&PID_803C
+%USB\VID_06A3&PID_2541.DeviceDesc%=X45_USB_2, USB\VID_06A3&PID_2541
+
+;========================================================================================
+
+[X36_USB_5.NT]
+CopyFiles=HID_Inst.CopyFiles, X36Filter.CopyFiles, HID_Inst.CopyFilesDLL.NT
+
+[X36_USB_5.NT.HW]
+AddReg = X36FilterNT.AddReg, X36_5.AddReg
+DelReg = X36_5.DelReg, HID_Inst.DelReg.NT.HW
+
+[X36_USB_5.NT.Services]
+AddService = HidUsb,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+AddService=x36f,,x36f_ServiceInstallSection
+
+[X36_5.AddReg]
+HKLM,System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_053F,OEMName,,"Saitek X36 D-USB"
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_053F,,,
+
+[X36_5.DelReg]
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_053F,ConfigCLSID
+
+
+;========================================================================================
+
+[X36_USB_8.NT]
+CopyFiles=HID_Inst.CopyFiles, X36Filter.CopyFiles, HID_Inst.CopyFilesDLL.NT
+
+[X36_USB_8.NT.HW]
+AddReg = X36FilterNT.AddReg, X36_8.AddReg
+DelReg = X36_8.DelReg, HID_Inst.DelReg.NT.HW
+
+[X36_USB_8.NT.Services]
+AddService = HidUsb,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+AddService=x36f,,x36f_ServiceInstallSection
+
+[X36_8.AddReg]
+HKLM,System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_803F,OEMName,,"Saitek X36 D-USB"
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_803F,,,
+
+[X36_8.DelReg]
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_803F,ConfigCLSID
+
+;========================================================================================
+
+;========================================================================================
+
+
+[X45_USB_5.NT]
+CopyFiles=HID_Inst.CopyFiles, X36Filter.CopyFiles, HID_Inst.CopyFilesDLL.NT
+
+[X45_USB_5.NT.HW]
+AddReg = X36FilterNT.AddReg, X45_5.AddReg
+DelReg = X45_5.DelReg, HID_Inst.DelReg.NT.HW
+
+[X45_USB_5.NT.Services]
+AddService = HidUsb,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+AddService=x36f,,x36f_ServiceInstallSection
+
+[X45_5.AddReg]
+HKLM,System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_053C,OEMName,,"Saitek X45 D-USB"
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_053C,,,
+
+[X45_5.DelReg]
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_053C,ConfigCLSID
+
+
+;========================================================================================
+
+
+[X45_USB_8.NT]
+CopyFiles=HID_Inst.CopyFiles, X36Filter.CopyFiles, HID_Inst.CopyFilesDLL.NT
+
+[X45_USB_8.NT.HW]
+AddReg = X36FilterNT.AddReg, X45_8.AddReg
+DelReg = X45_8.DelReg, HID_Inst.DelReg.NT.HW
+
+[X45_USB_8.NT.Services]
+AddService = HidUsb,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+AddService=x36f,,x36f_ServiceInstallSection
+
+[X45_8.AddReg]
+HKLM,System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_803C,OEMName,,"Saitek X45 D-USB"
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_803C,,,
+
+[X45_8.DelReg]
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_803C,ConfigCLSID
+
+
+;========================================================================================
+
+
+[X45_USB_2.NT]
+CopyFiles=HID_Inst.CopyFiles, X36Filter.CopyFiles, HID_Inst.CopyFilesDLL.NT
+
+[X45_USB_2.NT.HW]
+AddReg = X36FilterNT.AddReg, X45_2.AddReg
+DelReg = X45_2.DelReg, HID_Inst.DelReg.NT.HW
+
+[X45_USB_2.NT.Services]
+AddService = HidUsb,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+AddService=x36f,,x36f_ServiceInstallSection
+
+[X45_2.AddReg]
+HKLM,System\CurrentControlSet\Control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_2541,OEMName,,"Saitek X45 D-USB"
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_2541,,,
+
+[X45_2.DelReg]
+HKLM,System\CurrentControlSet\control\MediaProperties\PrivateProperties\Joystick\OEM\VID_06A3&PID_2541,ConfigCLSID
+
+;========================================================================================
+
+
+
+[HID_Inst.NT]
+Copyfiles = HID_Inst.CopyFiles.NT, HID_Inst.CopyFilesDLL.NT
+
+[HID_Inst.NT.HW]
+DelReg = HID_Inst.DelReg.NT.HW
+
+[HID_Inst.DelReg.NT.HW]
+; remove the selective suspend enable flag in case it is present from a previous install
+HKR,,"SelectiveSuspendEnabled"
+
+[HID_Inst.CopyFiles.NT]
+hidusb.sys
+hidclass.sys
+hidparse.sys
+
+[HID_INST.CopyFilesDLL.NT]
+hid.dll
+
+[HID_Inst.NT.Services]
+AddService = HidUsb,%SPSVCINST_ASSOCSERVICE%,HID_Service_Inst
+
+
+[HID_Service_Inst]
+DisplayName    = %HID.SvcDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_DEMAND_START%
+ErrorControl   = %SERVICE_ERROR_IGNORE%
+ServiceBinary  = %12%\hidusb.sys
+LoadOrderGroup = extended base
+
+
+;========================================================================================
+
+[X36Filter.CopyFiles]
+x36f.sys
+
+[X36Filter.AddReg]
+HKR,,LowerFilters,,"x36f.sys"
+
+[X36FilterNT.AddReg]
+HKR,,"LowerFilters",0x00010000,"x36f"
+
+[x36f_ServiceInstallSection]
+DisplayName    = %x36f_ServiceDesc%
+ServiceType    = %SERVICE_KERNEL_DRIVER%
+StartType      = %SERVICE_AUTO_START%
+ErrorControl   = %SERVICE_ERROR_IGNORE%
+ServiceBinary  = %12%\x36f.sys
+LoadOrderGroup = extended base
+
+
+;========================================================================================
+
+[Strings]
+MSFT                  = "Microsoft"
+HID.DeviceDesc        = "USB Human Interface Device"
+HID.DefaultDevice     = "HID default device"
+HID.ClassName         = "Human Interface Devices"
+HID.SvcDesc           = "Microsoft HID Class Driver"
+
+
+Saitek="Saitek"
+Dhauzimmer="Dhauzimmer"
+USBClassName="Universal Serial Bus controllers"
+X36.DeviceDesc="Saitek X36 Flight Controller (Dhauzimmer)"
+USB\VID_06A3&PID_053F.DeviceDesc="Saitek X36 Flight Controller D-USB"
+USB\VID_06A3&PID_803F.DeviceDesc="Saitek X36 Flight Controller D-USB"
+X45.DeviceDesc="Saitek X45 Flight Controller (Dhauzimmer)"
+USB\VID_06A3&PID_053C.DeviceDesc="Saitek X45 Flight Controller D-USB"
+USB\VID_06A3&PID_803C.DeviceDesc="Saitek X45 Flight Controller D-USB"
+USB\VID_06A3&PID_2541.DeviceDesc="Saitek X45 Flight Controller D-USB"
+x36f_ServiceDesc = "X36/45 USB Filter Driver Service"
+
+
+SPSVCINST_TAGTOFRONT  = 0x00000001
+SPSVCINST_ASSOCSERVICE= 0x00000002
+SERVICE_KERNEL_DRIVER = 1
+SERVICE_BOOT_START    = 0
+SERVICE_SYSTEM_START  = 1
+SERVICE_AUTO_START    = 2
+SERVICE_DEMAND_START  = 3
+SERVICE_ERROR_NORMAL  = 1
+SERVICE_ERROR_IGNORE  = 0
+REG_EXPAND_SZ         = 0x00020000
+REG_DWORD             = 0x00010001
+REG_SZ                = 0x00000000

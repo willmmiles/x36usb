@@ -1,0 +1,105 @@
+Default Profile Map
+
+This lists the frob table position for each frobabble on the stick.
+
+Command:
+0	-	Trigger Release
+1	-	Trigger Press
+2	-	Fire A Release
+3	-	Fire A Press
+4	-	Fire B Release
+5	-	Fire B Press
+6	-	Launch Release
+7	-	Launch Press
+8	-	Fire D Release
+9	-	Fire D Press
+10	-	Mouse Fire Release
+11	-	Mouse Fire Press
+12	-	Pinkie Switch Release
+13	-	Pinkie Switch Press
+14	-	Fire C Release
+15	-	Fire C Press
+16	-	Mode 1 Release
+17	-	Mode 1 Press
+18	-	Mode 2 Release
+19	-	Mode 2 Press
+20	-	Mode 3 Release
+21	-	Mode 3 Press
+22	-	Aux 1 Release
+23	-	Aux 1 Press
+24	-	Aux 2 Release
+25	-	Aux 2 Press
+26	-	Aux 3 Release
+27	-	Aux 3 Press
+28	-	Upper Stick Hat centre position Release
+29	-	Upper Stick Hat centre position Press
+30	-	Upper Stick Hat up Release
+31	-	Upper Stick Hat up Press
+32	-	Upper Stick Hat up-right Release
+33	-	Upper Stick Hat up-right Press
+34	-	Upper Stick Hat right Release
+35	-	Upper Stick Hat right Press
+36	-	Upper Stick Hat down-right Release
+37	-	Upper Stick Hat down-right Press
+38	-	Upper Stick Hat down Release
+39	-	Upper Stick Hat down Press
+40	-	Upper Stick Hat down-left Release
+41	-	Upper Stick Hat down-left Press
+42	-	Upper Stick Hat left Release
+43	-	Upper Stick Hat left Press
+44	-	Upper Stick Hat up-left Release
+45	-	Upper Stick Hat up-left Press
+46	-	Throttle Hat centre position Release
+47	-	Throttle Hat centre position Press
+48	-	Throttle Hat up Release
+49	-	Throttle Hat up Press
+50	-	Throttle Hat up-right Release
+51	-	Throttle Hat up-right Press
+52	-	Throttle Hat right Release
+53	-	Throttle Hat right Press
+54	-	Throttle Hat down-right Release
+55	-	Throttle Hat down-right Press
+56	-	Throttle Hat down Release
+57	-	Throttle Hat down Press
+58	-	Throttle Hat down-left Release
+59	-	Throttle Hat down-left Press
+60	-	Throttle Hat left Release
+61	-	Throttle Hat left Press
+62	-	Throttle Hat up-left Release
+63	-	Throttle Hat up-left Press
+64	-	Mouse Hat centre position Release
+65	-	Mouse Hat centre position Press
+66	-	Mouse Hat up Release
+67	-	Mouse Hat up Press
+68	-	Mouse Hat up-right Release
+69	-	Mouse Hat up-right Press
+70	-	Mouse Hat right Release
+71	-	Mouse Hat right Press
+72	-	Mouse Hat down-right Release
+73	-	Mouse Hat down-right Press
+74	-	Mouse Hat down Release
+75	-	Mouse Hat down Press
+76	-	Mouse Hat down-left Release
+77	-	Mouse Hat down-left Press
+78	-	Mouse Hat left Release
+79	-	Mouse Hat left Press
+80	-	Mouse Hat up-left Release
+81	-	Mouse Hat up-left Press
+82	-	Lower Stick Hat centre position Release
+83	-	Lower Stick Hat centre position Press
+84	-	Lower Stick Hat up Release
+85	-	Lower Stick Hat up Press
+86	-	Lower Stick Hat up-right Release
+87	-	Lower Stick Hat up-right Press
+88	-	Lower Stick Hat right Release
+89	-	Lower Stick Hat right Press
+90	-	Lower Stick Hat down-right Release
+91	-	Lower Stick Hat down-right Press
+92	-	Lower Stick Hat down Release
+93	-	Lower Stick Hat down Press
+94	-	Lower Stick Hat down-left Release
+95	-	Lower Stick Hat down-left Press
+96	-	Lower Stick Hat left Release
+97	-	Lower Stick Hat left Press
+98	-	Lower Stick Hat up-left Release
+99	-	Lower Stick Hat up-left Press

@@ -1,0 +1,25 @@
+-> add queue to h and setup and shutdown.
+
+
+engine 1 operation:
+-> catch system time.
+-> expand hats
+-> compute deltas.
+-> foreach(bit)
+	if delta
+     	queue up scripts
+     	if timer isn't running kick off timer
+    if notdelta but set
+    	// do something? to hold?
+-> construct return stick packet
+
+
+engine 2 operation:
+-> grab an item off the queue
+-> decode it
+-> alter internal structures
+-> peek at next item;
+-> construct packet
+-> send packet
+
+DIRECTX BUTTONS BYTES 21-26

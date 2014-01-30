@@ -1,0 +1,182 @@
+Dhauzimmer's X36 USB filter driver v2.1
+PROFILE.TXT
+03/26/2002
+----------------------------------------
+
+Background:
+
+Filter driver version 2.0+ now requires a loader program to load profiles into the driver.  The 2.x series uses a new set of memory structures, to reflect the capabilites of the new interface.
+
+Each button/switch position on the X36 is assigned one entry in a table of frobbables.  Each frobbable, at any given moment, may be in one of two positions: pressed or released.  A script of key or button presses may be triggered on the transition between each state.  The frobbables are, in order by number in the Frob Table text file.  All of the hat switches are handled as 8-ways.  When scripting for hat switches, remember that the release script for a direction will be processed before the press script for the new direction.
+
+--------
+
+Command Scripts
+
+
+This current build allows for up to 65536 different command scripts to be loaded in the driver at any one time.  A command script entry is constructed as follows:
+
+Script number:  0-65535 (2-byte unsigned short integer)
+Number of events: 0-65535 (2-byte unsigned short)
+  Event 1 Opcode: 1-byte unsigned char
+  Event 1 Data: 2-byte unsigned short integer
+  Event 1 Time delay: 4-byte unsigned long
+  Event 2 Opcode: 1-byte unsigned char
+  Event 2 Data: 2-byte unsigned short integer
+  Event 2 Time delay: 4-byte unsigned long
+  ...
+
+Currently defined opcodes are:
+  0x00  - Press keyboard key with HID code specified in data field.
+  0x01  - Release keyboard key with HID code specified in data field.
+  0x02  -   Press DirectX button specified in data field.
+  0x03  - Release DirectX button specified in data field.
+  0x04  -   Set the Windows Hat direction to the value specified in the data field.  0 = centered, 1 = up, clockwise to 8 = up-left.
+  0x05  - Load configuration specified in the data field.
+  0x08  - Press mouse button in the data field.  Valid values are 1-3.
+  0x09  - Release mouse button in the data field.  Valid values are 1-3.
+  0x0A  - Set mouse X axis velocity.  Value in data field is signed short int (negative is left, positive right.)
+  0x0B  - Set mouse Y axis velocity.  Value in data field is signed short int (negative is up, positive down.)
+
+The time delay field specifies a delay in milliseconds past the previous event.  Eg if the first entry had a delay of 5, and the second entry had a delay of 10, the second entry would fire at time 15ms.
+
+-------
+
+
+Axis Chains
+
+The feature that sets the 2.1 release apart from 2.0 is axis programmability.  That's right, now you can add command scripts to the motion of your axes!  Here's how it works:
+
+You can assign any number of 'breakpoints' in the range of motion of the axis.  When the position of the axis crosses the breakpoint, an action will happen.  Each breakpoint is assigned a 'frobbable number' that relates to the frobbable table used by the configuration profiles.  The frobbable will be 'pressed' as the motion crosses the breakpoint from lower to higher, and 'released' when the motion crosses the breakpoint from higher to lower.  Think of the breakpoint as a bar which triggers an electronic switch, and the frobbable as the switch number assigned to it in the button profile.
+
+On top of changing the frobbable bound to a breakpoint, you can change what chain is associated with each axis through the use of configuration entries.
+
+
+A breakpoint chain is constructed as follows:
+
+Chain number: 0-65535 (2-byte unsigned short)
+Number of breakpoints: 0-255 (1-byte unsigned char)
+  Breakpoint 1 Position: 2-byte unsigned short integer
+  Breakpoint 1 Frobbable: 2-byte unsigned short integer
+  Breakpoint 1 Translation: 2-byte unsigned short integer
+  Breakpoint 2 Position: 2-byte unsigned short integer
+  Breakpoint 2 Frobbable: 2-byte unsigned short integer
+  Breakpoint 2 Translation: 2-byte unsigned short integer
+  ...
+
+
+Each chain may have up to 255 breakpoints.  A breakpoint has three parameters: the position (axis value) where the breakpoint is located, the frobbable to trigger when the breakpoint is crossed, and the translation (axis output value) when the axis is at that breakpoint.
+
+The position field is the position where the breakpoint is to be triggered.  It should be within 0 and 65535.  The frobbable will be triggered when the measured axis value exactly reaches the breakpoint from below, or drops just below the breakpoint from above.
+
+The frobbable field is the frobbable number to trigger when the breakpoint is crossed.  It is used to compute the frob table position for use in configuration scripts (see profile.txt).  The configuration frob table entries for a frobbable number are:
+	Release		High -> Low		Frobbable*2
+	Press		Low->High		(Frobbable*2)+1
+Note that frobbables 0 through 49 are assigned to the buttons and hat switches on the HOTAS.  If you use one of these frobbables in an axis script, it will share the configured commands with that button.
+
+The translation value is used to set up variable axis response.  When the axis is precisely at the breakpoint, it will return the value set in the translation field.  When it is between breakpoints, the output value is linearly interpolated between the translation values of those breakpoints.  If there are no more breakpoints between the current position and the end of the range, the end of the range is used as the second value for interpolation.  This value may be overridden by placing unreachable breakpoints at the ends of the range.
+
+-------
+
+Configuration Scripts and Mode Switching
+
+You may define up to 65535 'configurations' which contain a list of frobbables and the command to be assigned to each one.  When a profile is loaded, configuration script 0 is automatically loaded.  To enable a configuration, place an event with opcode 0x05 and with the configuration number as the data field in a command.
+
+Here's how a configuration script works in the profile:
+
+  Configuration Number  - unsigned short - The number assigned to this configuration.
+  Entry Count       - unsigned short -   The number of frobbables modified by this configuration.
+  First Entry Type - unsigned char - type of entry. 0 = frobbable, 1 = chain.
+  First Frobbable Number or Axis Number - unsigned short  - Number of frobbable or axis to change.
+  First New Command or Chain - unsigned short  - New command to fire on frobbable, or new chain to bind to axis.
+  Second Frobbable Number
+  Second New Command
+  etc.
+
+
+Confused?  Here's an example.
+
+Command 1 - 0x03 0x0001 0x0000000 - Release DX Button 1
+Command 2 - 0x02 0x0001 0x0000000 - Press DX Button 1
+Command 3   - 0x01 0x0004 0x0000000 - Release key 'a'
+Command 4 - 0x00 0x0004 0x0000000 - Press key 'a'
+Command 5 - 0x05 0x0001 0x0000000 - Load configuration 1
+Command 6 - 0x05 0x0002 0x0000000 - Load configuration 2
+
+Configuration 0: // default - loaded at startup
+  
+  0x00 0x0000 0x0001	// Dx1  release on trigger release
+  0x00 0x0001 0x0002 // Dx1 press on trigger press
+  0x00 0x000C 0x0005 // Load config 1 on pinkie shift release
+  0x00 0x000D 0x0006 // Load config 2 on pinkie shift press
+
+Configuration 1:
+  0x00 0x0000 0x0001   // Attach command 1 to release of trigger
+  0x00 0x0001 0x0002   // Attach command 2 to press of trigger
+
+Configuration 2:
+  0x00 0x0000 0x0003   // Attach command 3 to release of trigger
+  0x00 0x0001 0x0004   // Attach command 4 to press of trigger
+
+This setup causes the trigger to send an 'a' key when the pinkie shift is pressed, and send DirectX button 1 when the shift is released.
+
+
+
+
+So how do we put all this together to create a profile?
+
+The driver expects binary profiles to follow a certain format.  ints are assumed to be 2 bytes, chars 1, longs 4.  The format is as follows:
+
+Version Byte    - unsigned char - Profile format version.  Profiles that meet the description here should set this byte to 0x04.
+
+Profile Byte Count  - unsigned long - Number of bytes in profile.
+
+Command Script Count - unsigned short - Number of command scripts following.
+
+  First Command Script - uses script format discussed above.
+  Second Command Script.. etc.
+
+Configuration Count - unsigned short - Number of configuration scripts following.
+  First Config Script
+  Second Config Script.. etc
+  
+Axis Chain Count - unsigned short - Number of axis chains following.
+  First Axis Chain
+  Second Axis Chain..etc
+
+Footer Byte     - unsigned char - Must be 0x00.
+
+
+-------
+
+Profiles are to be stored in binary format, one profile per file.  You will need a hex editor to create these files.  Once you've stored your profile, you can use 'query profilename.bpf' to load the profile into the driver.
+
+Two example profiles are included in with the driver package - one that emulates the 26-button stick that you get when you plug the X36 in without any drivers, and one that does the same but with the middle positions of the two switches masked off.
+
+-------
+
+Error codes.
+
+So your profile won't load?  Here's a list of the error codes that might be helpful.
+
+Error 02 - Profile below header size.
+Error 03 - Incorrect profile version.
+Error 04 - Length field does not match bytes sent.  Check length field in profile.
+Error 05 - Number of commands to load exceeds maximum number of commands supported by system.
+Error 06 - Data sent too small to contain next command.  Check number of commands field in profile.
+Error 07 - Data sent too small to contain size of script.  Check number of script entries in profile.
+Error 08 - Unable to allocate memory for script.
+Error 09 - unassigned.
+Error 10 - Footer position exceeds number of bytes sent.  Check footer is present.
+Error 11 - Footer byte does not match.  Check footer is present, check number of comands/script entries.
+Error 12 - Command number exceeds maximum.  Check byte counts and command numbering.
+Error 20 - Memory allocation arror while loading commands.
+Error 21 - Memory allocation error while loading configurations.
+
+BE AWARE THAT THIS DRIVER DOES MINIMAL ERROR CHECKING AND THAT A FAULTY PROFILE COULD DESTABILIZE YOUR SYSTEM.  CHECK YOUR PROFILES THOROUGHLY BEFORE LOADING!
+
+------
+
+Any questions?  Drop me an e-mail at dhauzimmer@geocities.com, ICQ me at 2978767, or post on Ron's message boards (www.saitekhelp.com) and we'll see what we can do.
+
+  Dhauzimmer
